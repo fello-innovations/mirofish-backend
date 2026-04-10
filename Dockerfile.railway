@@ -11,11 +11,11 @@ COPY backend/pyproject.toml backend/uv.lock ./backend/
 # Install Python deps
 RUN cd backend && uv sync --frozen --no-dev
 
-# Copy source
+# Copy source + entrypoint
 COPY backend/ ./backend/
+COPY entrypoint.sh ./entrypoint.sh
+RUN chmod +x entrypoint.sh
 
-# Railway sets PORT env var — Flask will read FLASK_PORT
 EXPOSE 8080
 
-# Railway sets PORT dynamically — pass it through as FLASK_PORT
-CMD sh -c "FLASK_PORT=${PORT:-8080} uv run --project backend python backend/run.py"
+ENTRYPOINT ["./entrypoint.sh"]
