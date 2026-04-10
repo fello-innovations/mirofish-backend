@@ -15,7 +15,7 @@ RUN cd backend && uv sync --frozen --no-dev
 COPY backend/ ./backend/
 
 # Railway sets PORT env var — Flask will read FLASK_PORT
-ENV FLASK_PORT=5001
-EXPOSE 5001
+EXPOSE 8080
 
-CMD ["uv", "run", "--project", "backend", "python", "backend/run.py"]
+# Railway sets PORT dynamically — pass it through as FLASK_PORT
+CMD sh -c "FLASK_PORT=${PORT:-8080} uv run --project backend python backend/run.py"
