@@ -11,8 +11,9 @@ COPY backend/pyproject.toml backend/uv.lock ./backend/
 # Install Python deps
 RUN cd backend && uv sync --frozen --no-dev
 
-# Copy source + entrypoint
+# Copy source + locales (app reads locales/ relative to project root) + entrypoint
 COPY backend/ ./backend/
+COPY locales/ ./locales/
 COPY entrypoint.sh ./entrypoint.sh
 RUN chmod +x entrypoint.sh
 
